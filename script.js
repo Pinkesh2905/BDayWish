@@ -167,11 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ── Letter typing ──
-  const letterText = `Some people walk into your life so quietly, without any announcement, and yet at some point you realize the friendship just... stuck.
+  const letterText = `Some people enter your world so silently, without making any noise, and before you know it, their presence just naturally belongs there.
 
-That's what happened with us.
+That's exactly how our bond formed.
 
-We've had days — many of them — where we didn't talk at all. No messages, no calls. And somehow when we do pick up again, nothing's changed. That's a rare thing, Dipali. That's what real friendship feels like.
+We've had days—so many of them—where we just drop each other random reels to spark up a chat. We only really call when it's genuinely needed, keeping things simple. Yet, every single time we reconnect, it feels like we never even paused. That effortless connection is a rare thing, Dipali. That's the mark of a true friend.
 
 From barely speaking on the same bus during college, to a DM after that December 2023 trip that somehow opened a whole chapter — I'm genuinely glad it happened.
 

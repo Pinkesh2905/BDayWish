@@ -982,9 +982,12 @@ body:has(button:hover) #cursor, body:has(a:hover) #cursor { width:20px; height:2
   .hero-name { font-size: clamp(4rem, 18vw, 7rem); }
   .letter-box { padding: 2rem 1.5rem; }
   .letter-stamp { top: -1rem; right: 0.5rem; font-size: 1.8rem; }
-  .timeline::before { left: 100px; }
-  .tl-item { grid-template-columns: 90px 24px 1fr; gap: 0 1rem; }
-  .tl-year { font-size: 1rem; }
+  .timeline::before { left: 50px; }
+  .tl-item { grid-template-columns: 40px 24px 1fr; gap: 0 1rem; }
+  .tl-year { font-size: 0.95rem; text-align: left; }
+  .tl-item { display: flex; flex-direction: column; padding: 1.5rem 0 1.5rem 60px; }
+  .tl-dot { position: absolute; left: 45px; top: 1.8rem; margin: 0; }
+  .tl-year { position: absolute; left: 0; top: 1.6rem; width: 35px; text-align: right; font-size: 0.85rem; padding-top: 0; transform: rotate(-90deg) translateX(-15px) translateY(-10px); transform-origin: right top; opacity: 0.8; }
   .section-heading { font-size: clamp(1.8rem, 7vw, 2.5rem); margin-bottom: 2.5rem; }
   .film-frame { width: 170px; }
   .gallery-hint { font-size: 0.66rem; }

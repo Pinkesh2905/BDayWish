@@ -54,6 +54,9 @@ img { display:block; max-width:100%; }
   transition: left 0.12s var(--ease-out-expo), top 0.12s var(--ease-out-expo), width 0.3s, height 0.3s;
 }
 body:has(button:hover) #cursor, body:has(a:hover) #cursor { width:20px; height:20px; background: var(--rose-light); }
+@media (hover: none) and (pointer: coarse) {
+  #cursor, #cursor-trail { display: none !important; }
+}
 
 /* ========== CANVAS / STARS ========== */
 #petals-canvas {
@@ -199,7 +202,7 @@ body:has(button:hover) #cursor, body:has(a:hover) #cursor { width:20px; height:2
   justify-content: center;
   text-align: center;
   position: relative;
-  padding: 6rem 1.5rem 4rem;
+  padding: 6rem 1.5rem 8rem;
 }
 .hero-tag {
   font-size: 0.8rem;

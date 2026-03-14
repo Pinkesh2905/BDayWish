@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Days Known Counter ──
   function calcDays() {
-    const start = new Date('2023-12-01');
+    const start = new Date('2023-12-21');
     const now   = new Date();
     return Math.floor((now - start) / (1000 * 60 * 60 * 24));
   }
@@ -282,7 +282,14 @@ And yes — as your best friend. Always.`;
   lbImg.style.transition = 'opacity 0.2s ease';
 
   frames.forEach((frame, i) => {
-    frame.addEventListener('click', () => openLightbox(i));
+    frame.addEventListener('click', (e) => {
+      if (isDraggingFilm) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      openLightbox(i);
+    });
     frame.style.cursor = 'none';
   });
 
@@ -307,16 +314,23 @@ And yes — as your best friend. Always.`;
 
   // ── Film Strip Drag Scroll ──
   const filmStrip = document.querySelector('.film-strip');
-  let isDown = false, startX, scrollLeft;
+  let isDown = false, isDraggingFilm = false, startX, scrollLeft;
+  
   filmStrip.addEventListener('mousedown', e => {
-    isDown = true; startX = e.pageX - filmStrip.offsetLeft; scrollLeft = filmStrip.scrollLeft;
+    isDown = true;
+    isDraggingFilm = false;
+    startX = e.pageX - filmStrip.offsetLeft;
+    scrollLeft = filmStrip.scrollLeft;
   });
   filmStrip.addEventListener('mouseleave', () => isDown = false);
   filmStrip.addEventListener('mouseup',    () => isDown = false);
   filmStrip.addEventListener('mousemove', e => {
     if (!isDown) return;
     e.preventDefault();
-    filmStrip.scrollLeft = scrollLeft - (e.pageX - filmStrip.offsetLeft - startX) * 1.4;
+    const x = e.pageX - filmStrip.offsetLeft;
+    const walk = (x - startX) * 1.4;
+    filmStrip.scrollLeft = scrollLeft - walk;
+    if (Math.abs(walk) > 5) isDraggingFilm = true;
   });
 
   // ── Candle Blow-Out ──

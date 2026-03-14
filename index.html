@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday, Dipali 🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Petals canvas -->
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- Stars layer -->
+  <div id="stars-layer"></div>
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-trail"></div>
+
+  <!-- Audio -->
+  <audio id="bgMusic" loop>
+    <!-- <source src="your-music.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <!-- ====== LANDING SCREEN ====== -->
+  <section id="landing" class="screen-cover">
+    <div class="landing-inner">
+      <div class="landing-badge">16 March · A Special Day</div>
+      <h1 class="landing-title">Something<br/><em>beautiful</em><br/>awaits you.</h1>
+      <p class="landing-sub">Open it when you're ready, Dipali.</p>
+      <button id="open-btn" class="pill-btn">
+        <span>Open your surprise</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="landing-deco top-left">✦</div>
+    <div class="landing-deco bottom-right">✦</div>
+    <div class="landing-deco top-right small">✧</div>
+    <div class="landing-deco bottom-left small">✧</div>
+  </section>
+
+  <!-- ====== MAIN CONTENT ====== -->
+  <main id="main" class="hidden">
+
+    <!-- HERO -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-tag reveal">Happy Birthday</div>
+        <h2 class="hero-name reveal delay-1">Dipali<span class="dot">.</span></h2>
+        <p class="hero-date reveal delay-2">16 March</p>
+      </div>
+      <div class="scroll-hint reveal delay-3">
+        <span>scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- LETTER SECTION -->
+    <section class="letter-section">
+      <div class="letter-wrapper">
+        <div class="letter-stamp">🌸</div>
+        <div class="letter-box" id="letter-box">
+          <p class="letter-salutation">Dear Dipali,</p>
+          <div id="typed-output"></div>
+          <p class="letter-signature hidden" id="letter-sig">— With love, <em>Pinkesh</em></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="timeline-section">
+      <div class="container">
+        <div class="section-label reveal">Our Story</div>
+        <h3 class="section-heading reveal">The journey so far.</h3>
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <div class="tl-year">2022–23</div>
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <h4>Same Bus, Different Worlds</h4>
+              <p>Two strangers sharing a commute, with no idea what was coming.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal delay-1">
+            <div class="tl-year">Dec 2023</div>
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <h4>The Message That Changed Everything</h4>
+              <p>A college trip, a DM on Instagram, and suddenly — a real friendship began.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal delay-2">
+            <div class="tl-year">2024</div>
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <h4>Random Chats & Shared Bakchodi</h4>
+              <p>Late-night conversations, matching energy, and a vibe that just clicked.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal delay-3">
+            <div class="tl-year">2025</div>
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <h4>A Friendship That Truly Matters</h4>
+              <p>Days pass without talking — but the bond doesn't move an inch. That's how you know it's real.</p>
+            </div>
+          </div>
+          <div class="tl-item reveal delay-4">
+            <div class="tl-year">∞</div>
+            <div class="tl-dot special"></div>
+            <div class="tl-body special-body">
+              <h4>What's Next</h4>
+              <p>More memories. More bakchodis. More everything — this chapter is just beginning.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARD GRID -->
+    <section class="cards-section">
+      <div class="container">
+        <div class="section-label reveal">Little Things About You</div>
+        <h3 class="section-heading reveal">What makes you, <em>you.</em></h3>
+        <div class="cards-grid">
+          <div class="card reveal">
+            <div class="card-icon">🌻</div>
+            <h4>The Way We Met</h4>
+            <p>A bus, barely a word spoken — and now here we are.</p>
+          </div>
+          <div class="card reveal delay-1">
+            <div class="card-icon">⚡</div>
+            <h4>That Bakchodi Energy</h4>
+            <p>Nobody matches your sense of humor. Absolutely nobody.</p>
+          </div>
+          <div class="card reveal delay-2">
+            <div class="card-icon">🌙</div>
+            <h4>My Motivation Booster</h4>
+            <p>When I'm low, you always know exactly what to say to lift me back up.</p>
+          </div>
+          <div class="card reveal delay-3">
+            <div class="card-icon">🌸</div>
+            <h4>Calm in the Chaos</h4>
+            <p>There's a sweetness to you that makes everything feel lighter.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery-section">
+      <div class="container">
+        <div class="section-label reveal">Moments</div>
+        <h3 class="section-heading reveal">A few favourites.</h3>
+        <p class="gallery-hint reveal delay-1">← scroll right to see more →</p>
+      </div>
+      <div class="film-strip">
+        <div class="film-track">
+          <div class="film-frame reveal">
+            <img src="https://drive.google.com/thumbnail?id=19W_wK1zelbpLLdhr55tA6qHlPN8T6045&sz=w800" alt="Memory 1" loading="lazy"/>
+            <div class="film-caption">Snapshot</div>
+          </div>
+          <div class="film-frame reveal delay-1">
+            <img src="https://drive.google.com/thumbnail?id=1ZVgwFZ4vi7sBzfepINf980IR6jBv3uHW&sz=w800" alt="Memory 2" loading="lazy"/>
+            <div class="film-caption">Beautiful</div>
+          </div>
+          <div class="film-frame reveal delay-2">
+            <img src="https://drive.google.com/thumbnail?id=1ZOI_FejKsfBiRCQAtP2uLmTMU74_JrHI&sz=w800" alt="Memory 3" loading="lazy"/>
+            <div class="film-caption">Cute</div>
+          </div>
+          <div class="film-frame reveal delay-3">
+            <img src="https://drive.google.com/thumbnail?id=1L0i2HLzWtg1XUPZHkkcTe0rfNIsRIZ-n&sz=w800" alt="Memory 4" loading="lazy"/>
+            <div class="film-caption">Stunning</div>
+          </div>
+          <div class="film-frame reveal">
+            <img src="https://drive.google.com/thumbnail?id=1Mew9Z2QoLk67MEFk6ZXuhrWAu9UP2j96&sz=w800" alt="Memory 5" loading="lazy"/>
+            <div class="film-caption">Smile</div>
+          </div>
+          <div class="film-frame reveal delay-1">
+            <img src="https://drive.google.com/thumbnail?id=1cd9Uk0ypV4VjIjgmAVlM6GHn4NBgCz2P&sz=w800" alt="Memory 6" loading="lazy"/>
+            <div class="film-caption">Gorgeous</div>
+          </div>
+          <div class="film-frame reveal delay-2">
+            <img src="https://drive.google.com/thumbnail?id=1fFh0ba2ayLqy4J1tRTTtTPyltTJzpsc7&sz=w800" alt="Memory 7" loading="lazy"/>
+            <div class="film-caption">Glow</div>
+          </div>
+          <div class="film-frame reveal delay-3">
+            <img src="https://drive.google.com/thumbnail?id=13WQwgjdiNaqnfvHbWkxQ76d2MnBJnaWM&sz=w800" alt="Memory 8" loading="lazy" style="object-position: top;"/>
+            <div class="film-caption">Favourite</div>
+          </div>
+          <div class="film-frame reveal">
+            <img src="https://drive.google.com/thumbnail?id=1iU3SXQEEM5gsZE2ywiXqAbYxRT06Y03A&sz=w800" alt="Memory 9" loading="lazy"/>
+            <div class="film-caption">Angel</div>
+          </div>
+          <div class="film-frame reveal delay-1">
+            <img src="https://drive.google.com/thumbnail?id=1NbmcMNQiEQ-XyhZdgw_weXHEo9MGkRja&sz=w800" alt="Memory 10" loading="lazy"/>
+            <div class="film-caption">Sweetest</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SURPRISE / FINALE -->
+    <section class="finale-section">
+      <div class="container">
+
+        <!-- Trigger button -->
+        <div id="finale-trigger" class="finale-trigger">
+          <div class="ft-ring"></div>
+          <div class="ft-ring ring2"></div>
+          <button id="surprise-btn" class="ft-btn">
+            <span class="ft-icon">🎂</span>
+            <span class="ft-label">One last thing</span>
+          </button>
+        </div>
+
+        <!-- Final message card -->
+        <div id="final-msg" class="final-card hidden">
+          <div class="fc-top">
+            <span class="fc-tag">A note from Pinkesh</span>
+            <span class="fc-date">16 March</span>
+          </div>
+          <div class="fc-divider"></div>
+          <p class="fc-main">The world became a little brighter the day you were born.</p>
+          <p class="fc-body">Genuinely glad our paths crossed — on that bus, of all places. Here's to more random talks, more bakchodi, more laughs, and countless more memories.</p>
+          <div class="fc-divider"></div>
+          <p class="fc-love">Happy Birthday, Dipali.<br/>I love you — as your best friend, always. 🌸</p>
+          <div class="fc-sig">— Pinkesh</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <span class="footer-name">Dipali 🌸</span>
+        <span class="footer-sep">·</span>
+        <span>16 March</span>
+        <span class="footer-sep">·</span>
+        <span>Built by Pinkesh with ♥</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- External libs -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

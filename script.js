@@ -62,15 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
   animPetals();
 
   // ── Custom Cursor ──
-  const cursor = document.getElementById('cursor');
-  const trail  = document.getElementById('cursor-trail');
-  let mx = 0, my = 0;
+  const cursorEl = document.getElementById('cursor');
+  const trail    = document.getElementById('cursor-trail');
   document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top  = my + 'px';
-    trail.style.left  = mx + 'px';
-    trail.style.top   = my + 'px';
+    cursorEl.style.left = e.clientX + 'px';
+    cursorEl.style.top  = e.clientY + 'px';
+    trail.style.left    = e.clientX + 'px';
+    trail.style.top     = e.clientY + 'px';
   });
 
   // ── Reveal on scroll ──
@@ -80,24 +78,92 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.12 });
   revealEls.forEach(el => revealObs.observe(el));
 
-  // ── Landing open ──
-  const landing  = document.getElementById('landing');
-  const main     = document.getElementById('main');
-  const openBtn  = document.getElementById('open-btn');
+  // ── Days Known Counter ──
+  function calcDays() {
+    const start = new Date('2023-12-01');
+    const now   = new Date();
+    return Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  }
+
+  function animateCounter(el, target, duration = 2000) {
+    let startTs = null;
+    function step(ts) {
+      if (!startTs) startTs = ts;
+      const progress = Math.min((ts - startTs) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      el.textContent = Math.floor(eased * target).toString().padStart(3, '0');
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toString().padStart(3, '0');
+    }
+    requestAnimationFrame(step);
+  }
+
+  const daysCountEl = document.getElementById('days-count');
+  let counterAnimated = false;
+  if (daysCountEl) {
+    const counterObs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !counterAnimated) {
+        counterAnimated = true;
+        animateCounter(daysCountEl, calcDays());
+        counterObs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    counterObs.observe(daysCountEl.closest('.days-counter'));
+  }
+
+  // ── Music Toggle ──
   const bgMusic  = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('music-toggle');
+  const iconOn   = document.getElementById('music-icon-on');
+  const iconOff  = document.getElementById('music-icon-off');
+  let musicPlaying = false;
+
+  function setMusicState(playing) {
+    musicPlaying = playing;
+    musicBtn.classList.toggle('playing', playing);
+    iconOn.style.display  = playing ? 'block' : 'none';
+    iconOff.style.display = playing ? 'none'  : 'block';
+  }
+  setMusicState(false);
+
+  musicBtn.addEventListener('click', () => {
+    if (musicPlaying) {
+      bgMusic.pause();
+      setMusicState(false);
+    } else {
+      bgMusic.volume = 0.25;
+      bgMusic.play().catch(() => {});
+      setMusicState(true);
+    }
+  });
+
+  // ── Landing open ──
+  const landing = document.getElementById('landing');
+  const main    = document.getElementById('main');
+  const openBtn = document.getElementById('open-btn');
 
   openBtn.addEventListener('click', () => {
     bgMusic.volume = 0.25;
-    bgMusic.play().catch(() => {});
+    bgMusic.play().then(() => setMusicState(true)).catch(() => {});
+
     landing.classList.add('exit');
     setTimeout(() => {
       landing.style.display = 'none';
       main.classList.remove('hidden');
-      // Trigger hero reveals
       document.querySelectorAll('.hero-section .reveal').forEach(el => {
         setTimeout(() => el.classList.add('visible'), 200);
       });
     }, 1400);
+
+    // Fireworks burst on open
+    setTimeout(() => {
+      const colors = ['#d4a853', '#f0c97a', '#c7546a', '#e8728a', '#f5ede0'];
+      [0.2, 0.5, 0.8].forEach((x, i) => {
+        setTimeout(() => {
+          confetti({ particleCount: 40, angle: 90, spread: 80, origin: { x, y: 0.5 }, colors, gravity: 0.8, scalar: 0.9 });
+        }, i * 300);
+      });
+    }, 800);
   });
 
   // ── Letter typing ──
@@ -132,11 +198,11 @@ And yes — as your best friend. Always.`;
   letterObs.observe(letterSection);
 
   function typeText(text) {
-    const output = document.getElementById('typed-output');
-    const sig    = document.getElementById('letter-sig');
-    const cursor = document.createElement('span');
-    cursor.className = 'type-cursor';
-    output.appendChild(cursor);
+    const output    = document.getElementById('typed-output');
+    const sig       = document.getElementById('letter-sig');
+    const typeCursor = document.createElement('span');
+    typeCursor.className = 'type-cursor';
+    output.appendChild(typeCursor);
 
     const lines = text.split('\n');
     let lIdx = 0, cIdx = 0;
@@ -144,7 +210,7 @@ And yes — as your best friend. Always.`;
 
     function tick() {
       if (lIdx >= lines.length) {
-        cursor.remove();
+        typeCursor.remove();
         sig.classList.remove('hidden');
         setTimeout(() => sig.classList.add('show'), 50);
         return;
@@ -152,14 +218,14 @@ And yes — as your best friend. Always.`;
       const line = lines[lIdx];
       if (cIdx === 0) {
         if (line === '') {
-          output.insertBefore(document.createElement('br'), cursor);
-          output.insertBefore(document.createElement('br'), cursor);
+          output.insertBefore(document.createElement('br'), typeCursor);
+          output.insertBefore(document.createElement('br'), typeCursor);
           lIdx++; cIdx = 0;
           setTimeout(tick, 60);
           return;
         }
         currentEl = document.createElement('span');
-        output.insertBefore(currentEl, cursor);
+        output.insertBefore(currentEl, typeCursor);
       }
       if (cIdx < line.length) {
         currentEl.textContent += line[cIdx];
@@ -173,42 +239,193 @@ And yes — as your best friend. Always.`;
     tick();
   }
 
-  // ── Film strip drag scroll ──
+  // ── Photo Lightbox ──
+  const lightbox   = document.getElementById('lightbox');
+  const lbImg      = document.getElementById('lb-img');
+  const lbCaption  = document.getElementById('lb-caption');
+  const lbClose    = document.getElementById('lightbox-close');
+  const lbPrev     = document.getElementById('lightbox-prev');
+  const lbNext     = document.getElementById('lightbox-next');
+  const lbBackdrop = lightbox.querySelector('.lb-backdrop');
+
+  const frames = Array.from(document.querySelectorAll('.film-frame'));
+  let currentLbIdx = 0;
+
+  function openLightbox(idx) {
+    currentLbIdx = idx;
+    const frame = frames[idx];
+    const img   = frame.querySelector('img');
+    lbImg.src   = img.src;
+    lbCaption.textContent = frame.dataset.caption || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { lbImg.src = ''; }, 400);
+  }
+
+  function navigateLightbox(dir) {
+    currentLbIdx = (currentLbIdx + dir + frames.length) % frames.length;
+    const frame = frames[currentLbIdx];
+    const img   = frame.querySelector('img');
+    lbImg.style.opacity = '0';
+    setTimeout(() => {
+      lbImg.src = img.src;
+      lbCaption.textContent = frame.dataset.caption || '';
+      lbImg.style.opacity = '1';
+    }, 180);
+  }
+
+  lbImg.style.transition = 'opacity 0.2s ease';
+
+  frames.forEach((frame, i) => {
+    frame.addEventListener('click', () => openLightbox(i));
+    frame.style.cursor = 'none';
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbBackdrop.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', () => navigateLightbox(-1));
+  lbNext.addEventListener('click', () => navigateLightbox(1));
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft')  navigateLightbox(-1);
+    if (e.key === 'ArrowRight') navigateLightbox(1);
+  });
+
+  let lbTouchStartX = 0;
+  lightbox.addEventListener('touchstart', e => { lbTouchStartX = e.touches[0].clientX; });
+  lightbox.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - lbTouchStartX;
+    if (Math.abs(dx) > 50) navigateLightbox(dx < 0 ? 1 : -1);
+  });
+
+  // ── Film Strip Drag Scroll ──
   const filmStrip = document.querySelector('.film-strip');
   let isDown = false, startX, scrollLeft;
   filmStrip.addEventListener('mousedown', e => {
     isDown = true; startX = e.pageX - filmStrip.offsetLeft; scrollLeft = filmStrip.scrollLeft;
   });
   filmStrip.addEventListener('mouseleave', () => isDown = false);
-  filmStrip.addEventListener('mouseup', () => isDown = false);
+  filmStrip.addEventListener('mouseup',    () => isDown = false);
   filmStrip.addEventListener('mousemove', e => {
     if (!isDown) return;
     e.preventDefault();
-    const x = e.pageX - filmStrip.offsetLeft;
-    filmStrip.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    filmStrip.scrollLeft = scrollLeft - (e.pageX - filmStrip.offsetLeft - startX) * 1.4;
   });
 
-  // ── Surprise button ──
+  // ── Candle Blow-Out ──
+  const candleHint  = document.getElementById('candle-hint');
+  const candleWish  = document.getElementById('candle-wish');
+  const candleWraps = document.querySelectorAll('.candle-wrap');
+  let blownCount    = 0;
+  const totalCandles = 5;
+
+  function blowCandle(i) {
+    const flame = document.getElementById(`flame-${i}`);
+    if (!flame || flame.classList.contains('out')) return;
+
+    flame.classList.add('out');
+    blownCount++;
+
+    // Smoke puff
+    const wrap  = candleWraps[i];
+    const puff  = document.createElement('div');
+    puff.className = 'smoke-puff';
+    wrap.appendChild(puff);
+    setTimeout(() => puff.remove(), 1300);
+
+    const remaining = totalCandles - blownCount;
+    if (remaining > 0) {
+      candleHint.textContent = remaining === 1 ? `One more to go... 🕯️` : `${remaining} candles left ✨`;
+    } else {
+      candleHint.classList.add('hidden');
+      setTimeout(() => {
+        candleWish.classList.remove('hidden');
+        const colors = ['#d4a853', '#f0c97a', '#c7546a', '#e8728a', '#f5ede0', '#fff'];
+        const end = Date.now() + 3500;
+        (function wishFrame() {
+          confetti({ particleCount: 6, angle: 60,  spread: 70, origin: { x: 0 }, colors, gravity: 0.7 });
+          confetti({ particleCount: 6, angle: 120, spread: 70, origin: { x: 1 }, colors, gravity: 0.7 });
+          if (Date.now() < end) requestAnimationFrame(wishFrame);
+        })();
+      }, 400);
+    }
+  }
+
+  candleWraps.forEach((wrap, i) => {
+    wrap.addEventListener('click', () => blowCandle(i));
+  });
+
+  // ── Easter Egg — 🌸 stamp ──
+  const stamp     = document.getElementById('letter-stamp');
+  const toast     = document.getElementById('easter-toast');
+  const easterMsg = document.getElementById('easter-msg');
+  let stampClicks  = 0;
+  let toastTimeout = null;
+
+  const easterMessages = [
+    '🌸 You found the secret!',
+    '✨ Pinkesh knew you\'d click this...',
+    '💛 Keep going, 3 more times...',
+    '🌙 Getting warmer...',
+    '🎉 You\'re so curious — just like a cat!',
+    '🌸 Secret: Pinkesh thinks you\'re the coolest person he knows.',
+    '💌 And the most beautiful. Obviously. 🫶',
+    '✦ Stop clicking and go enjoy the rest of the page!',
+    '😂 Seriously though. Go scroll down.',
+    '🌸 ok fine. I love you. Bye. 🥺'
+  ];
+
+  function showToast(msg) {
+    easterMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+
+  stamp.addEventListener('click', () => {
+    stampClicks++;
+    const idx = Math.min(stampClicks - 1, easterMessages.length - 1);
+    showToast(easterMessages[idx]);
+
+    if (stampClicks === 6) {
+      confetti({
+        particleCount: 60,
+        spread: 100,
+        origin: { y: 0.45 },
+        colors: ['#d4a853', '#f0c97a', '#e8a090', '#f5ede0'],
+        scalar: 0.8
+      });
+    }
+  });
+
+  // ── Surprise Button ──
   const surpriseBtn = document.getElementById('surprise-btn');
   const finalMsg    = document.getElementById('final-msg');
   const finTrigger  = document.getElementById('finale-trigger');
 
   surpriseBtn.addEventListener('click', () => {
     finTrigger.style.transition = 'opacity 0.4s, transform 0.4s';
-    finTrigger.style.opacity = '0';
-    finTrigger.style.transform = 'scale(0.9)';
+    finTrigger.style.opacity    = '0';
+    finTrigger.style.transform  = 'scale(0.9)';
     setTimeout(() => { finTrigger.style.display = 'none'; }, 400);
     finalMsg.classList.remove('hidden');
     setTimeout(() => finalMsg.classList.add('show'), 50);
 
-    // Confetti burst
-    const end = Date.now() + 5000;
     const colors = ['#d4a853', '#f0c97a', '#c7546a', '#e8728a', '#f5ede0'];
+    const end = Date.now() + 6000;
     (function frame() {
-      confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0 }, colors });
-      confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1 }, colors });
+      confetti({ particleCount: 6, angle: 60,  spread: 65, origin: { x: 0 }, colors });
+      confetti({ particleCount: 6, angle: 120, spread: 65, origin: { x: 1 }, colors });
       if (Date.now() < end) requestAnimationFrame(frame);
     })();
+    confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 }, colors, gravity: 0.6, scalar: 1.1 });
 
     bgMusic.volume = 0.45;
   });

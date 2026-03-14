@@ -26,6 +26,36 @@
     <!-- <source src="your-music.mp3" type="audio/mpeg"> -->
   </audio>
 
+  <!-- Music Toggle Button -->
+  <button id="music-toggle" class="music-btn" title="Toggle music" aria-label="Toggle music">
+    <svg id="music-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+    </svg>
+    <svg id="music-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg" class="hidden-icon">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      <line x1="2" y1="2" x2="22" y2="22"/>
+    </svg>
+  </button>
+
+  <!-- Photo Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <button id="lightbox-close" class="lb-close">✕</button>
+    <button id="lightbox-prev" class="lb-arrow lb-prev">‹</button>
+    <button id="lightbox-next" class="lb-arrow lb-next">›</button>
+    <div class="lb-backdrop"></div>
+    <div class="lb-frame">
+      <img id="lb-img" src="" alt=""/>
+      <div id="lb-caption" class="lb-caption"></div>
+    </div>
+  </div>
+
+  <!-- Easter Egg Toast -->
+  <div id="easter-toast" class="easter-toast">
+    <span id="easter-msg"></span>
+  </div>
+
   <!-- ====== LANDING SCREEN ====== -->
   <section id="landing" class="screen-cover">
     <div class="landing-inner">
@@ -53,7 +83,14 @@
         <h2 class="hero-name reveal delay-1">Dipali<span class="dot">.</span></h2>
         <p class="hero-date reveal delay-2">16 March</p>
       </div>
-      <div class="scroll-hint reveal delay-3">
+      <!-- Days Known Counter -->
+      <div class="days-counter reveal delay-3">
+        <div class="dc-inner">
+          <span class="dc-number" id="days-count">000</span>
+          <span class="dc-label">days of knowing you</span>
+        </div>
+      </div>
+      <div class="scroll-hint reveal delay-4">
         <span>scroll</span>
         <div class="scroll-line"></div>
       </div>
@@ -62,7 +99,7 @@
     <!-- LETTER SECTION -->
     <section class="letter-section">
       <div class="letter-wrapper">
-        <div class="letter-stamp">🌸</div>
+        <div class="letter-stamp" id="letter-stamp" title="Psst... try clicking me 🤫">🌸</div>
         <div class="letter-box" id="letter-box">
           <p class="letter-salutation">Dear Dipali,</p>
           <div id="typed-output"></div>
@@ -160,46 +197,70 @@
       </div>
       <div class="film-strip">
         <div class="film-track">
-          <div class="film-frame reveal">
+        <div class="film-frame reveal" data-index="0" data-caption="Snapshot">
             <img src="https://drive.google.com/thumbnail?id=19W_wK1zelbpLLdhr55tA6qHlPN8T6045&sz=w800" alt="Memory 1" loading="lazy"/>
             <div class="film-caption">Snapshot</div>
           </div>
-          <div class="film-frame reveal delay-1">
+          <div class="film-frame reveal delay-1" data-index="1" data-caption="Beautiful">
             <img src="https://drive.google.com/thumbnail?id=1ZVgwFZ4vi7sBzfepINf980IR6jBv3uHW&sz=w800" alt="Memory 2" loading="lazy"/>
             <div class="film-caption">Beautiful</div>
           </div>
-          <div class="film-frame reveal delay-2">
+          <div class="film-frame reveal delay-2" data-index="2" data-caption="Cute">
             <img src="https://drive.google.com/thumbnail?id=1ZOI_FejKsfBiRCQAtP2uLmTMU74_JrHI&sz=w800" alt="Memory 3" loading="lazy"/>
             <div class="film-caption">Cute</div>
           </div>
-          <div class="film-frame reveal delay-3">
+          <div class="film-frame reveal delay-3" data-index="3" data-caption="Stunning">
             <img src="https://drive.google.com/thumbnail?id=1L0i2HLzWtg1XUPZHkkcTe0rfNIsRIZ-n&sz=w800" alt="Memory 4" loading="lazy"/>
             <div class="film-caption">Stunning</div>
           </div>
-          <div class="film-frame reveal">
+          <div class="film-frame reveal" data-index="4" data-caption="Smile">
             <img src="https://drive.google.com/thumbnail?id=1Mew9Z2QoLk67MEFk6ZXuhrWAu9UP2j96&sz=w800" alt="Memory 5" loading="lazy"/>
             <div class="film-caption">Smile</div>
           </div>
-          <div class="film-frame reveal delay-1">
+          <div class="film-frame reveal delay-1" data-index="5" data-caption="Gorgeous">
             <img src="https://drive.google.com/thumbnail?id=1cd9Uk0ypV4VjIjgmAVlM6GHn4NBgCz2P&sz=w800" alt="Memory 6" loading="lazy"/>
             <div class="film-caption">Gorgeous</div>
           </div>
-          <div class="film-frame reveal delay-2">
+          <div class="film-frame reveal delay-2" data-index="6" data-caption="Glow">
             <img src="https://drive.google.com/thumbnail?id=1fFh0ba2ayLqy4J1tRTTtTPyltTJzpsc7&sz=w800" alt="Memory 7" loading="lazy"/>
             <div class="film-caption">Glow</div>
           </div>
-          <div class="film-frame reveal delay-3">
+          <div class="film-frame reveal delay-3" data-index="7" data-caption="Favourite">
             <img src="https://drive.google.com/thumbnail?id=13WQwgjdiNaqnfvHbWkxQ76d2MnBJnaWM&sz=w800" alt="Memory 8" loading="lazy" style="object-position: top;"/>
             <div class="film-caption">Favourite</div>
           </div>
-          <div class="film-frame reveal">
+          <div class="film-frame reveal" data-index="8" data-caption="Angel">
             <img src="https://drive.google.com/thumbnail?id=1iU3SXQEEM5gsZE2ywiXqAbYxRT06Y03A&sz=w800" alt="Memory 9" loading="lazy"/>
             <div class="film-caption">Angel</div>
           </div>
-          <div class="film-frame reveal delay-1">
+          <div class="film-frame reveal delay-1" data-index="9" data-caption="Sweetest">
             <img src="https://drive.google.com/thumbnail?id=1NbmcMNQiEQ-XyhZdgw_weXHEo9MGkRja&sz=w800" alt="Memory 10" loading="lazy"/>
             <div class="film-caption">Sweetest</div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CANDLE SECTION -->
+    <section class="candle-section">
+      <div class="container">
+        <div class="section-label reveal">Make a Wish</div>
+        <h3 class="section-heading reveal">Close your eyes.<br/><em>Then blow.</em></h3>
+        <div class="candle-stage reveal delay-1">
+          <div class="cake-base">
+            <div class="cake-tier tier-1"></div>
+            <div class="cake-tier tier-2"></div>
+            <div class="cake-tier tier-3"></div>
+            <div class="cake-candles" id="cake-candles">
+              <div class="candle-wrap" data-i="0"><div class="candle-body"></div><div class="candle-flame" id="flame-0"></div></div>
+              <div class="candle-wrap" data-i="1"><div class="candle-body"></div><div class="candle-flame" id="flame-1"></div></div>
+              <div class="candle-wrap" data-i="2"><div class="candle-body"></div><div class="candle-flame" id="flame-2"></div></div>
+              <div class="candle-wrap" data-i="3"><div class="candle-body"></div><div class="candle-flame" id="flame-3"></div></div>
+              <div class="candle-wrap" data-i="4"><div class="candle-body"></div><div class="candle-flame" id="flame-4"></div></div>
+            </div>
+          </div>
+          <p class="candle-hint" id="candle-hint">Click a candle to blow it out ✨</p>
+          <p class="candle-wish hidden" id="candle-wish">✨ Wish made! May every dream of yours come true. ✨</p>
         </div>
       </div>
     </section>
